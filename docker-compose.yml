@@ -1,0 +1,6 @@
+services:
+  store-api-practice:
+    image: ${DOCKER_REGISTRY-}storeapipractice
+    build:
+      context: .
+      dockerfile: store-api-practice/Dockerfile

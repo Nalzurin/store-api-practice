@@ -1,0 +1,6 @@
+@store_api_practice_HostAddress = http://localhost:5216
+
+GET {{store_api_practice_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
