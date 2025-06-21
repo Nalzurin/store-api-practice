@@ -1,6 +1,44 @@
 services:
+  database:
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_DB: "store-db"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "admin"
+    ports:
+      - 15432:5432
+    networks:
+      - postgres-network
+    volumes:
+      - ./db-data:/var/lib/postgresql/data/
+  
+  pgadmin:
+    image: dpage/pgadmin4
+    user: '$UID:$GID'
+    environment:
+    - PGADMIN_DEFAULT_EMAIL=alexnormandi@ukr.net
+    - PGADMIN_DEFAULT_PASSWORD=admin
+    - PGADMIN_LISTEN_PORT=5050 
+    ports:
+      - 15433:5050
+    depends_on:
+      - database
+    networks:
+      - postgres-network
+    volumes:
+      - ./pgadmin-data:/var/lib/pgadmin/
   store-api-practice:
     image: ${DOCKER_REGISTRY-}storeapipractice
+    depends_on:
+      - database
     build:
       context: .
       dockerfile: store-api-practice/Dockerfile
+
+networks: 
+  postgres-network:
+    driver: bridge
+volumes:
+  db-data:
+  pgadmin-data:
+

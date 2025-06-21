@@ -1,0 +1,51 @@
+create table brands(
+brand_id serial primary key,
+brand_name varchar(255)
+);
+create table items(
+item_id serial primary key,
+brand_id int references brands(brand_id),
+item_name varchar(255),
+item_slug varchar(255),
+price money
+);
+create table categories(
+category_id serial primary key,
+category_name varchar(255)
+);
+create table item_categories(
+item_id int references items(item_id),
+category_id int references categories(category_id),
+primary key (item_id, category_id)
+);
+create table permissions(
+permission_id serial primary key,
+permission_name varchar(255)
+);
+create table roles(
+role_id serial primary key,
+role_name varchar(255)
+);
+create table role_permissions(
+role_id int references roles(role_id),
+permission_id int references permissions(permission_id),
+primary key (role_id, permission_id)
+);
+create table customers(
+customer_id serial primary key,
+customer_username varchar(255),
+customer_password varchar,
+customer_email varchar(255),
+customer_phone int,
+role_id int references roles(role_id)
+);
+create table orders(
+order_id serial primary key,
+customer_id int references customers(customer_id),
+payment_status bool
+);
+create table order_items(
+id serial primary key,
+order_id int references orders(order_id),
+item_id int references items(item_id)
+);
